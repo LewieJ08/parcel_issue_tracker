@@ -5,8 +5,8 @@ df = pd.read_csv("data.csv")
 
 def main():
     while True:
-        print("1. Get total issues of one type")
-        print("2. Get total solutions of one type")
+        print("1. Get issue distribution for one issue type")
+        print("2. Get total parcels for one issue type")
         print("3. Exit")
 
         try:
@@ -17,9 +17,10 @@ def main():
 
         if option == 1:
             issue_type = convert_issue()
-            get_issue(issue_type)
+            get_issue_data(issue_type)
         elif option == 2:
-            pass
+            issue_type = convert_issue()
+            get_total_parcels(issue_type)
         elif option == 3:
             break
         else:
@@ -52,7 +53,7 @@ def convert_issue():
             print("Invalid input, please try again")
             continue
 
-def get_issue(issue_type):
+def get_issue_data(issue_type):
     issue_type_df = df[df["issue_type"] == issue_type]
     filtered_df = df[df["issue_type"] != issue_type]
 
@@ -64,7 +65,23 @@ def get_issue(issue_type):
     plt.pie(data, labels=labels, autopct='%1.1f%%')
     plt.title("Distribution of Issue Types")
     plt.show()
-    print(issue_type_df)
+
+    print("\n",issue_type_df)
+
+def get_total_parcels(issue_type):
+    filtered_df = df[df["issue_type"] == issue_type]
+    grouped = filtered_df.groupby("solution_type")["number_of_parcels"].sum()
+
+    formatted_label = issue_type.replace("_"," ").title()
+
+    plt.bar(grouped.index,grouped.values)
+    plt.title(f"Total Parcel Distribution for {formatted_label}")
+    plt.xlabel("Solution Types")
+    plt.ylabel("Parcels")
+    plt.grid(True)
+    plt.show()
+
+
 
 if __name__ == "__main__":
     main()
