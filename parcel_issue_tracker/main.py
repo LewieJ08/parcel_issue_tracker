@@ -53,8 +53,18 @@ def convert_issue():
             continue
 
 def get_issue(issue_type):
-    filtered_df = df[df["issue_type"] == issue_type]
-    print(filtered_df)
+    issue_type_df = df[df["issue_type"] == issue_type]
+    filtered_df = df[df["issue_type"] != issue_type]
+
+    data = [len(issue_type_df),len(filtered_df)]
+
+    formatted_label = issue_type.replace("_"," ").title()
+    labels = [f"Contains {formatted_label}",f"Does not contain {formatted_label}"]
+
+    plt.pie(data, labels=labels, autopct='%1.1f%%')
+    plt.title("Distribution of Issue Types")
+    plt.show()
+    print(issue_type_df)
 
 if __name__ == "__main__":
     main()
