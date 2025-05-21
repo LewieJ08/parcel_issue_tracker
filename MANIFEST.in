@@ -1,1 +1,1 @@
-recursive-include parcel_issue_tracker
+recursive-include parcel_issue_tracker/data.csv
